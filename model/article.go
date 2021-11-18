@@ -17,3 +17,10 @@ type ArticleDetail struct {
 	Article
 	Content string `db:"content"`
 }
+
+// PostParams 请求参数
+type PostParams struct {
+	Page     int `form:"page"`
+	PageSize int `form:"pageSize"`
+	CateId   int `form:"cateId"`
+}
