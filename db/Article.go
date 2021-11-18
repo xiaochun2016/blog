@@ -18,7 +18,7 @@ func AddArticle(username string, title string, email string, content string, cat
 
 // ArtList 文件列表
 func ArtList(params *model.PostParams) (list []*model.Article, err error) {
-	sql1 := `select id,user_name,email,cate_id,title,summary,create_time from article limit ?,?`
+	sql1 := `select id,user_name,email,cate_id,title,summary,create_time from article where status=1 limit ?,?`
 	err = db.Select(&list, sql1, (params.Page-1)*params.PageSize, params.PageSize)
 	if err != nil {
 		return
