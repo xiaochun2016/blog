@@ -7,11 +7,12 @@ import (
 
 func RegisterRoute() *gin.Engine {
 	r := gin.Default()
-	v1 := r.Group("/book")
+	v1 := r.Group("/article")
 	{
-		v1.GET("/", controller.Index)        //主页
-		v1.POST("/add", controller.AddArt)   //添加文章
-		v1.POST("/list", controller.ArtList) //文章列表
+		v1.GET("/", controller.Index)                //主页
+		v1.POST("/add", controller.AddArt)           //添加文章
+		v1.POST("/list", controller.ArtList)         //文章列表
+		v1.POST("/listById", controller.ArtListById) //通过分类id获取文章列表
 	}
 	cateV1 := r.Group("/cate")
 	{

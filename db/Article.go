@@ -25,3 +25,13 @@ func ArtList(params *model.PostParams) (list []*model.Article, err error) {
 	}
 	return
 }
+
+//ArtListById 通过分类id获取文章列表
+func ArtListById(id, page, pageSize int) (list []*model.Article, err error) {
+	sql1 := `select id,user_name,email,cate_id,title,summary,create_time from article where status=1 and cate_id=? limit ?,?`
+	err = db.Select(&list, sql1, id, (page-1)*pageSize, pageSize)
+	if err != nil {
+		return
+	}
+	return
+}

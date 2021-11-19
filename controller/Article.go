@@ -97,3 +97,58 @@ func ArtList(c *gin.Context) {
 	})
 	return
 }
+
+//ArtListById 根据分类获取文章列表
+func ArtListById(c *gin.Context) {
+	var param *model.PostParams
+	err := c.ShouldBindWith(&param, binding.Form)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": "202",
+			"msg":  err.Error(),
+		})
+		return
+	}
+	if param.CateId < 1 {
+		c.JSON(http.StatusOK, gin.H{
+			"code": "202",
+			"msg":  "分类id不能为空",
+		})
+		return
+	}
+	list, err := db.ArtListById(param.CateId, param.Page, param.PageSize)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": "202",
+			"msg":  err.Error(),
+		})
+		return
+	}
+	title := "获取成功"
+	if len(list) < 1 {
+		title = "暂无数据"
+		c.JSON(http.StatusOK, gin.H{
+			"code": "200",
+			"msg":  title,
+			"data": list,
+		})
+		return
+	}
+	var ids []int64
+	for _, v := range list {
+		ids = append(ids, int64(v.CateId))
+	}
+	idList, _ := db.GetCateByIds(ids)
+	for _, v := range list {
+		val, ok := idList[int64(v.CateId)]
+		if ok {
+			v.CateName = val
+		}
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"code": "200",
+		"msg":  title,
+		"data": list,
+	})
+	return
+}
