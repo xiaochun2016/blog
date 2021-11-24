@@ -20,5 +20,9 @@ func RegisterRoute() *gin.Engine {
 		cateV1.GET("/all", controller.GetAll)           //全部分类
 		cateV1.POST("/getById", controller.GetCateById) //通过id获取分类
 	}
+	leave := r.Group("leave")
+	{
+		leave.POST("add", controller.LeaveAdd) //添加留言
+	}
 	return r
 }
